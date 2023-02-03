@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import ReactDOM from "react-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -12,7 +12,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormLabel from "@material-ui/core/FormLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 
 
 const validationSchema = yup.object({
@@ -26,9 +25,8 @@ const validationSchema = yup.object({
     .required("Password is required"),
   date: yup.string("Select date").required("Date is required"),
   age: yup.string("select age").required("age is required"),
-  hobbies: yup.array().required("Required"),
+  hobbies: yup.string().required("hobbies are Required"),
 });
-
 const WithMaterialUI = () => {
   const formik = useFormik({
     initialValues: {
@@ -36,7 +34,7 @@ const WithMaterialUI = () => {
       password: "",
       age: "",
       date: "",
-      hobbies:[]
+      hobbies:"",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -101,7 +99,25 @@ const WithMaterialUI = () => {
             <MenuItem value="30">Thirty</MenuItem>
           </Select>
         </FormControl>
-        <Button
+<FormControl>
+  <br/>
+<FormLabel component="legend">Hobbies</FormLabel>
+  <FormGroup 
+   name="hobbies"
+   value={formik.values.hobbies}
+   onChange={formik.handleChange}
+   error={formik.touched.hobbies && Boolean(formik.errors.hobbies)}
+   helperText={formik.touched.hobbies && formik.errors.hobbies}
+   
+   >
+  <FormControlLabel control={<Checkbox/>}  name="hobbies" value ="Label" 
+  checked={formik.values.hobbies.includes('Label')}  label="Label" />
+  <FormControlLabel control={<Checkbox />} name="hobbies" 
+  checked={formik.values.hobbies.includes('Disabled')}  value="Disabled" label="Disabled" />
+</FormGroup>
+</FormControl>
+<br/>
+      <Button
           color="primary"
           variant="contained"
           type="submit"
